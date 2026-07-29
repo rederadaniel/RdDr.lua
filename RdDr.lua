@@ -1,5 +1,5 @@
 -- RdDr.lua (Bootstrapper)
-local BaseUrl = "https://raw.githubusercontent.com/rederadaniel/RdDr.lua/refs/heads/main/RdDr/"
+local BaseUrl = "https://raw.githubusercontent.com/rederadaniel/RdDr.lua/refs/heads/main/"
 
 local files = {
     "Main.lua",
