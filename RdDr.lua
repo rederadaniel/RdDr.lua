@@ -16,10 +16,17 @@ local files = {
 }
 
 for _, file in ipairs(files) do
-    local success, err = pcall(function()
-        loadstring(game:HttpGet(BaseUrl .. file, true))()
+    local url = BaseUrl .. file
+    local success, result = pcall(function()
+        local code = game:HttpGet(url, true)
+        local func, err = loadstring(code)
+        if not func then
+            error("Syntax error in " .. file .. ": " .. tostring(err))
+        end
+        return func()
     end)
+    
     if not success then
-        warn("[RdDr Loader] Failed to load " .. file .. ": " .. tostring(err))
+        warn("[RdDr Loader] Failed to load " .. file .. ": " .. tostring(result))
     end
 end
