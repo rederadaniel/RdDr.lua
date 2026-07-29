@@ -1,25 +1,23 @@
--- RdDr/Others.lua
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
-local VirtualUser = game:GetService("VirtualUser")
+y2 = AddSectionHeader(PageTP, "World Map Island Travel Vector", 10)
+y2 = AddNavInstructionText(PageTP, "Click any location to trigger world map island jumps instantly.", y2)
 
-local Player = Players.LocalPlayer
-local PageOthers = _G.RDR_CreatePage("Others", "🚀 Others")
-
-local noclipActive, flyActive, infJumpActive = false, false, false
-local flySpeed = 50
-
-RunService.Stepped:Connect(function()
-    if noclipActive and Player.Character then
-        for _, part in ipairs(Player.Character:GetDescendants()) do
-            if part:IsA("BasePart") then part.CanCollide = false end
-        end
-    end
-end)
-
-UserInputService.JumpRequest:Connect(function()
-    if infJumpActive and Player.Character and Player.Character:FindFirstChild("Humanoid") then
-        Player.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-    end
-end)
+for _, island in ipairs(islandList) do
+	local IslandBtn = Instance.new("TextButton")
+	IslandBtn.Size = UDim2.new(1, -20, 0, 36)
+	IslandBtn.Position = UDim2.new(0, 10, 0, y2)
+	IslandBtn.BackgroundColor3 = Color3.fromRGB(35, 45, 75)
+	IslandBtn.Text = "Request Cross-Island Travel ➔ " .. island
+	IslandBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+	IslandBtn.Font = Enum.Font.SourceSansBold
+	IslandBtn.TextSize = 13
+	IslandBtn.Parent = PageTP
+	
+	Instance.new("UICorner", IslandBtn).CornerRadius = UDim.new(0, 5)
+	y2 = y2 + 42
+	
+	IslandBtn.MouseButton1Click:Connect(function()
+		pcall(function()
+			ReplicatedStorage.Remotes.IslandTravel.RequestIslandTravel:InvokeServer(island)
+		end)
+	end)
+end
